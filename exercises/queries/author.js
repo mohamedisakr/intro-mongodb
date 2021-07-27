@@ -28,8 +28,4 @@ const authorSchema = new Schema(
   { timestamps: true }
 );
 
-// authorSchema.add({
-//   author
-// })
-
 module.exports = mongoose.model("author", authorSchema);

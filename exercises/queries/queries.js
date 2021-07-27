@@ -1,31 +1,40 @@
 const Post = require("./post");
 
-const postByTitle = async (title) => {
-  const post = await Post.findOne({ title }).exec();
+const postByTitle = (title) => {
+  const post = Post.findOne({ title }).exec();
   return post;
 };
 
-const postsForAuthor = async (authorId) => {
-  const post = await Post.findOne({ author: authorId }).exec();
+const postsForAuthor = (authorId) => {
+  const posts = Post.find({ author: authorId }).exec();
+  return posts;
+};
+
+const fullPostById = (id) => {
+  const post = Post.findById(id).populate("author").exec(); //.exec();
   return post;
 };
 
-const fullPostById = async (id) => {
-  const post = await Post.findById(id).exec();
-  return post;
+const allPostsSlim = async (fieldsToSelect) => {
+  const posts = await Post.find({}).select(fieldsToSelect).exec();
+  return posts;
 };
 
-const allPostsSlim = (fieldsToSelect) => {};
-
-const postByContentLength = async (maxContentLength, minContentLength) => {
-  const posts = await Post.find({
-    contentLength: { $gt: minContentLength },
-    contentLength: { $lt: maxContentLength },
+const postByContentLength = (maxContentLength, minContentLength) => {
+  const posts = Post.find({
+    contentLength: { $gt: minContentLength, $lt: maxContentLength },
   }).exec();
   return posts;
 };
 
-const addSimilarPosts = (postId, similarPosts) => {};
+const addSimilarPosts = async (postId, similarPosts) => {
+  const postToUpdate = await Post.findByIdAndUpdate(
+    postId,
+    { $push: { similarPosts: { $each: similarPosts } } },
+    { new: true }
+  ).exec();
+  return postToUpdate;
+};
 
 module.exports = {
   postByTitle,

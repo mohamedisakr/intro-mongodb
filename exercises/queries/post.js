@@ -27,12 +27,18 @@ const postSchema = new Schema(
       ref: "author",
       required: true,
     },
+    similarPosts: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "post",
+      },
+    ],
   },
   { timestamps: true }
 );
 
-postSchema.add({
-  similarPost: [postSchema],
-});
+// postSchema.add({
+//   similarPosts: [postSchema],
+// });
 
 module.exports = mongoose.model("post", postSchema);
