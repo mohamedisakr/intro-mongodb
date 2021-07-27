@@ -15,20 +15,32 @@ app.get("/", async (req, res) => {
 });
 
 app.get("/todos/:id", async (req, res) => {
-  const todoId = req.params.id;
-  const noteToBeRead = await Todo.findById(todoId).lean().exec();
-  res.status(200).json(noteToBeRead);
+  const { id } = req.params;
+  try {
+    const noteToBeRead = await Todo.findById(id).lean().exec();
+    res.status(200).json(noteToBeRead);
+  } catch (e) {
+    res.status(500).send();
+  }
 });
 
 app.get("/todos", async (req, res) => {
-  const allTodos = await Todo.find({}).lean().exec();
-  res.status(200).json(allTodos);
+  try {
+    const allTodos = await Todo.find({}).lean().exec();
+    res.status(200).json(allTodos);
+  } catch (e) {
+    res.status(500).send();
+  }
 });
 
 app.post("/todos", async (req, res) => {
-  const todoToCreate = req.body; //.todo;
-  const savedTodo = await Todo.create(todoToCreate);
-  res.status(201).json(savedTodo);
+  const todoToCreate = req.body;
+  try {
+    const savedTodo = await Todo.create(todoToCreate);
+    res.status(201).json(savedTodo);
+  } catch (e) {
+    res.status(500).send();
+  }
 });
 
 connect(uri)
