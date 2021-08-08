@@ -1,7 +1,7 @@
 const User = require("./user");
 
-const getUserById = (id) => {
-  return User.findById(id).exec();
+const getUserById = async (id) => {
+  return await User.findById(id).exec();
 };
 
 const getAllUsers = () => {
@@ -9,10 +9,10 @@ const getAllUsers = () => {
 };
 
 const createUser = (userDetails) => {
-  return User.create(userDetails).exec();
+  return User.create(userDetails); //.exec();
 };
 const removeUserById = (id) => {
-  return User.findByIdAndDelete(id).exec();
+  return User.findByIdAndDelete(id); //.exec();
 };
 
 const updateUserById = (id, update) => {
